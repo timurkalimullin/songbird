@@ -1,0 +1,14 @@
+.header {
+  &-list {
+    display: flex;
+    list-style: none;
+
+    &__item {
+      margin-right: 10px;
+
+      &.active {
+        background-color: cornflowerblue;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+.bird {
+  &-list {
+    list-style: none;
+
+    &__item {
+      &::before {
+        content: "\2022";
+        color: gray;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+
+      &.right {
+        &::before {
+          color: green;
+        }
+      }
+
+      &.wrong {
+        &::before {
+          color: red;
+        }
+      }
+    }
+  }
+}
