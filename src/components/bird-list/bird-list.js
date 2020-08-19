@@ -11,12 +11,12 @@ const BirdList = (props) => {
       className={className}>
       {el.name}
     </li>)
-  })
+  });
   return (
     <ul className="bird-list">
       {birdList}
     </ul>
   )
-}
+};
 
 export default BirdList;
