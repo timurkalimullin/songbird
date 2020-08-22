@@ -5,6 +5,7 @@ import Header from './components/header/header';
 import birdData from './data/bird-data';
 import ItemList from './components/item-list/item-list';
 import Button from './components/button/button';
+import ItemInfo from './components/item-info/item-info';
 
 class App extends React.Component {
   categories = ['Разминка', 'Воробьиные', 'Лесные птицы', 'Певчие птицы', 'Хищные птицы', 'Морские птицы'];
@@ -15,7 +16,8 @@ class App extends React.Component {
     itemArray: this.itemData[0],
     isStepEnded: false,
     stepScore: 5,
-    gameScore: 0
+    gameScore: 0,
+    selectedItem: null
   }
 
   getRandomItem() {
@@ -24,6 +26,9 @@ class App extends React.Component {
 
   onItemSelected = (index) => {
     const { itemArray, rightItem, isStepEnded, stepScore } = this.state;
+    this.setState({
+      selectedItem: itemArray[index]
+    });
     if (!isStepEnded && !itemArray[index].checked) {
       let isStepEnded = false;
       let curentStepScore = stepScore;
@@ -40,7 +45,7 @@ class App extends React.Component {
       this.setState({
         itemArray: modifieditemList,
         isStepEnded: isStepEnded,
-        stepScore: curentStepScore
+        stepScore: curentStepScore,
       })
     }
   }
@@ -54,19 +59,22 @@ class App extends React.Component {
         itemArray: this.itemData[nextStep],
         rightItem: this.getRandomItem(),
         gameScore: state.stepScore + state.gameScore,
-        stepScore: 5
+        stepScore: 5,
+        selectedItem: null
       }))
     }
   }
 
   render() {
-    const { category, gameScore, rightItem } = this.state;
-    console.log('Right item is: ', rightItem)
+    const { category, gameScore, rightItem, selectedItem } = this.state;
+    console.log('Right item is: ', rightItem);
+    const itemInfo = selectedItem ? <ItemInfo {...selectedItem} /> : <div> Выберите птичку</div>;
     return (
       <div>
         <Header activeHeader={this.categories[category]} names={this.categories} score={gameScore} />
         <ItemList names={this.state.itemArray} onItemSelected={this.onItemSelected} />
         <Button text="Следующая категория" onBtnClick={this.onBtnClick} isStepEnded={this.state.isStepEnded} />
+        {itemInfo}
       </div>
     )
   }
