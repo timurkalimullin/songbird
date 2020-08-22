@@ -3,44 +3,44 @@ import './App.css';
 
 import Header from './components/header/header';
 import birdData from './data/bird-data';
-import BirdList from './components/bird-list/bird-list';
+import ItemList from './components/item-list/item-list';
 import Button from './components/button/button';
 
 class App extends React.Component {
   categories = ['Разминка', 'Воробьиные', 'Лесные птицы', 'Певчие птицы', 'Хищные птицы', 'Морские птицы'];
+  itemData = birdData;
   state = {
     category: 0,
-    rightBird: null,
-    birdArray: birdData[0]
+    rightItem: this.getRandomItem(),
+    itemArray: this.itemData[0],
+    isStepEnded: false,
+    stepScore: 5,
+    gameScore: 0
   }
 
-  componentDidMount() {
-    const randomBird = this.getRandomBird();
-    this.setState({
-      rightBird: randomBird,
-      isStepEnded: false
-    })
+  getRandomItem() {
+    return Math.floor(Math.random() * this.itemData.length);
   }
 
-  getRandomBird() {
-    return Math.floor(Math.random() * 6);
-  }
-
-  onBirdSelected = (index) => {
-    if (!this.state.isStepEnded) {
-      const modifiedBirdList = this.state.birdArray.map((el, i) => {
-        if (i === index && index === this.state.rightBird) {
+  onItemSelected = (index) => {
+    const { itemArray, rightItem, isStepEnded, stepScore } = this.state;
+    if (!isStepEnded && !itemArray[index].checked) {
+      let isStepEnded = false;
+      let curentStepScore = stepScore;
+      const modifieditemList = itemArray.map((el, i) => {
+        if (i === index && index === rightItem) {
           el.checked = 'right';
-          this.setState({
-            isStepEnded: true
-          })
-        } else if (i === index && index !== this.state.rightBird && !el.checked) {
+          isStepEnded = true;
+        } else if (i === index && index !== rightItem) {
           el.checked = 'wrong';
+          curentStepScore--;
         }
         return el;
       });
       this.setState({
-        birdArray: modifiedBirdList,
+        itemArray: modifieditemList,
+        isStepEnded: isStepEnded,
+        stepScore: curentStepScore
       })
     }
   }
@@ -51,17 +51,21 @@ class App extends React.Component {
       this.setState((state) => ({
         category: nextStep,
         isStepEnded: false,
-        birdArray: birdData[nextStep]
+        itemArray: this.itemData[nextStep],
+        rightItem: this.getRandomItem(),
+        gameScore: state.stepScore + state.gameScore,
+        stepScore: 5
       }))
     }
   }
 
   render() {
-    const { category } = this.state;
+    const { category, gameScore, rightItem } = this.state;
+    console.log('Right item is: ', rightItem)
     return (
       <div>
-        <Header activeHeader={this.categories[category]} names={this.categories} />
-        <BirdList names={this.state.birdArray} onBirdSelected={this.onBirdSelected} />
+        <Header activeHeader={this.categories[category]} names={this.categories} score={gameScore} />
+        <ItemList names={this.state.itemArray} onItemSelected={this.onItemSelected} />
         <Button text="Следующая категория" onBtnClick={this.onBtnClick} isStepEnded={this.state.isStepEnded} />
       </div>
     )

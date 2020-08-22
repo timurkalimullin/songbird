@@ -8,9 +8,12 @@ const Header = (props) => {
     return <li key={index} className={"header-list__item" + className}>{name}</li>
   });
   return (
-    <ul className="header-list">
-      {headerList}
-    </ul>
+    <React.Fragment>
+      <ul className="header-list">
+        {headerList}
+      </ul>
+      <div className="total-score">Score: {props.score}</div>
+    </React.Fragment>
   )
 }
 

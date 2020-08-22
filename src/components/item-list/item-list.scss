@@ -1,0 +1,19 @@
+.item {
+  &-list {
+    list-style: none;
+
+    &__item {
+      &.right {
+        span {
+          color: green;
+        }
+      }
+
+      &.wrong {
+        span {
+          color: red;
+        }
+      }
+    }
+  }
+}
