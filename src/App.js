@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import './App.css';
 
 import Header from './components/header/header';
@@ -6,10 +6,13 @@ import birdData from './data/bird-data';
 import ItemList from './components/item-list/item-list';
 import Button from './components/button/button';
 import ItemInfo from './components/item-info/item-info';
+import CurrentItemInfo from './components/current-item-info/current-item-info';
 
 class App extends React.Component {
   categories = ['Разминка', 'Воробьиные', 'Лесные птицы', 'Певчие птицы', 'Хищные птицы', 'Морские птицы'];
   itemData = birdData;
+  audioRef = createRef();
+
   state = {
     category: 0,
     rightItem: this.getRandomItem(),
@@ -36,6 +39,7 @@ class App extends React.Component {
         if (i === index && index === rightItem) {
           el.checked = 'right';
           isStepEnded = true;
+          this.audioRef.current.audio.current.pause();
         } else if (i === index && index !== rightItem) {
           el.checked = 'wrong';
           curentStepScore--;
@@ -66,13 +70,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { category, gameScore, rightItem, selectedItem } = this.state;
+    const { category, gameScore, rightItem, selectedItem, isStepEnded, itemArray } = this.state;
     console.log('Right item is: ', rightItem);
+    const currentItemInfo = isStepEnded ? itemArray[rightItem] : { name: "*****", image: "", audio: itemArray[rightItem].audio };
     const itemInfo = selectedItem ? <ItemInfo {...selectedItem} /> : <div> Выберите птичку</div>;
     return (
       <div>
         <Header activeHeader={this.categories[category]} names={this.categories} score={gameScore} />
-        <ItemList names={this.state.itemArray} onItemSelected={this.onItemSelected} />
+        <CurrentItemInfo rightItem={currentItemInfo} audioRef={this.audioRef} />
+        <ItemList names={itemArray} onItemSelected={this.onItemSelected} />
         <Button text="Следующая категория" onBtnClick={this.onBtnClick} isStepEnded={this.state.isStepEnded} />
         {itemInfo}
       </div>
