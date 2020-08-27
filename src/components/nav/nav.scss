@@ -1,0 +1,26 @@
+.nav {
+  &-list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: 6px;
+    padding-left: 0;
+    font-size: 20px;
+    font-weight: lighter;
+
+    &__item {
+      height: 36px;
+      text-align: center;
+      flex: auto;
+      background-color: #bdb6b6a3;
+      color: #fff;
+
+      &.active {
+        background-color: #b0c7f0;
+        color: #105757;
+      }
+    }
+  }
+}

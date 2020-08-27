@@ -9,8 +9,8 @@ class CurrentItemInfo extends React.Component {
     return (
       <div className="current-item-info">
         <img src={rightItem.image} alt="right-item"></img>
-        <div className="current-iten-info__wrapper">
-          <h2 className="current-iten-info__title">{rightItem.name}</h2>
+        <div className="current-item-info__wrapper">
+          <h2 className="current-item-info__title">{rightItem.name}</h2>
           <Player src={rightItem.audio} audioRef={audioRef} />
         </div>
       </div>

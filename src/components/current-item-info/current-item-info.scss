@@ -1,0 +1,34 @@
+.current-item-info {
+  display: flex;
+  justify-content: space-between;
+  border: 3px solid #073642;
+  border-radius: 5px;
+  padding: 1em;
+
+  &__wrapper {
+    text-align: center;
+    width: calc(100% - 240px);
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  img {
+    width: 170px;
+    height: 155px;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 556px) {
+  .current-item-info {
+    flex-direction: column;
+    align-items: center;
+
+    &__wrapper {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  }
+}

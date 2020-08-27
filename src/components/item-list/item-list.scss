@@ -1,18 +1,27 @@
-.item {
-  &-list {
-    list-style: none;
+.list-group {
+  margin-bottom: 20px;
 
-    &__item {
-      &.right {
-        span {
-          color: green;
-        }
+  &-item {
+    cursor: pointer;
+
+    span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 15px;
+      border-radius: 50%;
+      background-color: white;
+    }
+
+    &.right {
+      span {
+        background-color: green;
       }
+    }
 
-      &.wrong {
-        span {
-          color: red;
-        }
+    &.wrong {
+      span {
+        background-color: red;
       }
     }
   }

@@ -1,5 +1,7 @@
 .btn {
   &__next {
+    width: 100%;
+
     &.active {
       background-color: greenyellow;
     }

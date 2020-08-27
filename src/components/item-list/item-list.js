@@ -4,16 +4,16 @@ import './item-list.scss';
 
 const ItemList = (props) => {
   const itemList = props.names.map((el, i) => {
-    const className = el.checked === 'right' ? 'item-list__item right' :
-      el.checked === 'wrong' ? 'item-list__item wrong' : 'item-list__item';
+    const className = el.checked === 'right' ? 'list-group-item right' :
+      el.checked === 'wrong' ? 'list-group-item wrong' : 'list-group-item';
     return (<li key={i}
       onClick={() => props.onItemSelected(i)}
       className={className}>
-      <span>{"\u2022"}</span>{el.name}
+      <span></span>{el.name}
     </li>)
   });
   return (
-    <ul className="item-list">
+    <ul className="list-group col-md-6">
       {itemList}
     </ul>
   )

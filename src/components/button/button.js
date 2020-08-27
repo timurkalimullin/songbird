@@ -4,7 +4,7 @@ import './button.scss';
 
 const Button = (props) => {
   const { text, onBtnClick } = props;
-  const className = props.isStepEnded ? 'btn btn__next active' : 'btn btn__next';
+  const className = props.isStepEnded ? 'btn btn__next btn-success' : 'btn btn__next btn-secondary';
   return (
     <button onClick={() => onBtnClick()} className={className}>{text}</button>
   )

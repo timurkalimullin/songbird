@@ -7,6 +7,11 @@ import ItemList from './components/item-list/item-list';
 import Button from './components/button/button';
 import ItemInfo from './components/item-info/item-info';
 import CurrentItemInfo from './components/current-item-info/current-item-info';
+import Nav from './components/nav/nav';
+
+import blankImage from './assets/index.jpg';
+import successAudio from './assets/Smiling Face With Heart-Shaped Eyes.wav';
+import failAudio from './assets/Disappointed Face.wav';
 
 class App extends React.Component {
   categories = ['Разминка', 'Воробьиные', 'Лесные птицы', 'Певчие птицы', 'Хищные птицы', 'Морские птицы'];
@@ -38,10 +43,12 @@ class App extends React.Component {
       const modifieditemList = itemArray.map((el, i) => {
         if (i === index && index === rightItem) {
           el.checked = 'right';
+          new Audio(successAudio).play();
           isStepEnded = true;
           this.audioRef.current.audio.current.pause();
         } else if (i === index && index !== rightItem) {
           el.checked = 'wrong';
+          new Audio(failAudio).play();
           curentStepScore--;
         }
         return el;
@@ -72,15 +79,19 @@ class App extends React.Component {
   render() {
     const { category, gameScore, rightItem, selectedItem, isStepEnded, itemArray } = this.state;
     console.log('Right item is: ', rightItem);
-    const currentItemInfo = isStepEnded ? itemArray[rightItem] : { name: "*****", image: "", audio: itemArray[rightItem].audio };
-    const itemInfo = selectedItem ? <ItemInfo {...selectedItem} /> : <div> Выберите птичку</div>;
+    const currentItemInfo = isStepEnded ? itemArray[rightItem] : { name: "*****", image: blankImage, audio: itemArray[rightItem].audio };
+    const itemInfo = selectedItem ? <ItemInfo {...selectedItem} /> : <div className="blankText"> Прослушайте аудио и выберите соответствующую ему птичку</div>;
     return (
-      <div>
-        <Header activeHeader={this.categories[category]} names={this.categories} score={gameScore} />
+      <div className="container">
+        <Nav activeNav={this.categories[category]} names={this.categories} score={gameScore} />
         <CurrentItemInfo rightItem={currentItemInfo} audioRef={this.audioRef} />
-        <ItemList names={itemArray} onItemSelected={this.onItemSelected} />
+        <div className="item-container">
+          <ItemList names={itemArray} onItemSelected={this.onItemSelected} />
+          <div className="item-info col-md-6">
+            {itemInfo}
+          </div>
+        </div>
         <Button text="Следующая категория" onBtnClick={this.onBtnClick} isStepEnded={this.state.isStepEnded} />
-        {itemInfo}
       </div>
     )
   }
