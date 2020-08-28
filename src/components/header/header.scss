@@ -1,14 +1,21 @@
 .header {
-  &-list {
-    display: flex;
-    list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
 
-    &__item {
-      margin-right: 10px;
+  img {
+    width: 170px;
+  }
 
-      &.active {
-        background-color: cornflowerblue;
-      }
-    }
+  .total-score {
+    height: 30px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 390px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
   }
 }
