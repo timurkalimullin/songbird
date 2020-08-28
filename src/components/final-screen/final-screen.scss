@@ -1,0 +1,28 @@
+.final-screen {
+  text-align: center;
+  margin-bottom: 20px;
+
+  .image-wrapper {
+    min-width: 250px;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  h2 {
+    font-size: 30px !important;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .final-screen {
+
+    h2 {
+      font-size: 20px !important;
+    }
+
+  }
+}

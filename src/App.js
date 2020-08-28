@@ -8,6 +8,7 @@ import Button from './components/button/button';
 import ItemInfo from './components/item-info/item-info';
 import CurrentItemInfo from './components/current-item-info/current-item-info';
 import Nav from './components/nav/nav';
+import FinalScreen from './components/final-screen/final-screen';
 
 import blankImage from './assets/index.jpg';
 import successAudio from './assets/Smiling Face With Heart-Shaped Eyes.wav';
@@ -33,14 +34,19 @@ class App extends React.Component {
   }
 
   onItemSelected = (index) => {
-    const { itemArray, rightItem, isStepEnded, stepScore } = this.state;
-    this.setState({
-      selectedItem: itemArray[index]
-    });
+    const { itemArray, rightItem, isStepEnded, stepScore, selectedItem } = this.state;
+
+    if (selectedItem !== itemArray[index]) {
+      this.setState({
+        selectedItem: itemArray[index]
+      });
+    }
+
     if (!isStepEnded && !itemArray[index].checked) {
       let isStepEnded = false;
       let curentStepScore = stepScore;
-      const modifieditemList = itemArray.map((el, i) => {
+      const cloned = JSON.parse(JSON.stringify(itemArray));
+      const modifieditemList = cloned.map((el, i) => {
         if (i === index && index === rightItem) {
           el.checked = 'right';
           new Audio(successAudio).play();
@@ -62,14 +68,25 @@ class App extends React.Component {
   }
 
   onBtnClick = () => {
-    if (this.state.isStepEnded) {
+    if (this.state.isStepEnded && this.state.category < 6) {
+      const isFinal = this.state.category === 5 ? true : false;
       const nextStep = this.state.category + 1;
       this.setState((state) => ({
         category: nextStep,
-        isStepEnded: false,
+        isStepEnded: isFinal,
         itemArray: this.itemData[nextStep],
         rightItem: this.getRandomItem(),
         gameScore: state.stepScore + state.gameScore,
+        stepScore: 5,
+        selectedItem: null
+      }))
+    } else if (this.state.category > 5) {
+      this.setState((state) => ({
+        category: 0,
+        isStepEnded: false,
+        itemArray: birdData[0],
+        rightItem: this.getRandomItem(),
+        gameScore: 0,
         stepScore: 5,
         selectedItem: null
       }))
@@ -77,21 +94,34 @@ class App extends React.Component {
   }
 
   render() {
-    const { category, gameScore, rightItem, selectedItem, isStepEnded, itemArray } = this.state;
-    console.log('Right item is: ', rightItem);
-    const currentItemInfo = isStepEnded ? itemArray[rightItem] : { name: "*****", image: blankImage, audio: itemArray[rightItem].audio };
-    const itemInfo = selectedItem ? <ItemInfo {...selectedItem} /> : <div className="blankText"> Прослушайте аудио и выберите соответствующую ему птичку</div>;
+    let gameContent, btnText;
+    if (this.state.category < 6) {
+      const { category, gameScore, rightItem, selectedItem, isStepEnded, itemArray } = this.state;
+      console.log('Правильный ответ: ', itemArray[rightItem].name);
+      const currentItemInfo = isStepEnded ? itemArray[rightItem] : { name: "*****", image: blankImage, audio: itemArray[rightItem].audio };
+      const itemInfo = selectedItem ? <ItemInfo {...selectedItem} /> : <div className="blankText"> Прослушайте аудио и выберите соответствующую ему птичку</div>;
+
+      btnText = "Следующая категория";
+      gameContent = (
+        <React.Fragment>
+          <Nav activeNav={this.categories[category]} names={this.categories} score={gameScore} />
+          <CurrentItemInfo rightItem={currentItemInfo} audioRef={this.audioRef} />
+          <div className="item-container">
+            <ItemList names={itemArray} onItemSelected={this.onItemSelected} />
+            <div className="item-info col-md-6">
+              {itemInfo}
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    } else {
+      btnText = "Попробовать снова";
+    }
     return (
       <div className="container">
-        <Nav activeNav={this.categories[category]} names={this.categories} score={gameScore} />
-        <CurrentItemInfo rightItem={currentItemInfo} audioRef={this.audioRef} />
-        <div className="item-container">
-          <ItemList names={itemArray} onItemSelected={this.onItemSelected} />
-          <div className="item-info col-md-6">
-            {itemInfo}
-          </div>
-        </div>
-        <Button text="Следующая категория" onBtnClick={this.onBtnClick} isStepEnded={this.state.isStepEnded} />
+        <Header score={this.state.gameScore} />
+        {this.state.category < 6 ? gameContent : <FinalScreen score={this.state.gameScore} />}
+        <Button text={btnText} onBtnClick={this.onBtnClick} isStepEnded={this.state.isStepEnded} />
       </div>
     )
   }

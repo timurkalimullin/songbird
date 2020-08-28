@@ -3,6 +3,12 @@
 
   &-item {
     cursor: pointer;
+    border: 3px solid #073642;
+    transition: all 0.4s;
+
+    &:hover {
+      background-color: #3c75687d;
+    }
 
     span {
       display: inline-block;

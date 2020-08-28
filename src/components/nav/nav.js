@@ -12,7 +12,6 @@ const Nav = (props) => {
       <ul className="nav-list">
         {navList}
       </ul>
-      <div className="total-score">Score: {props.score}</div>
     </React.Fragment>
   )
 };
