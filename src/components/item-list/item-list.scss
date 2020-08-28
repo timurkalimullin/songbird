@@ -1,0 +1,29 @@
+.list-group {
+  margin-bottom: 20px;
+
+  &-item {
+    cursor: pointer;
+    border: 3px solid #073642;
+
+    span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 15px;
+      border-radius: 50%;
+      background-color: white;
+    }
+
+    &.right {
+      span {
+        background-color: green;
+      }
+    }
+
+    &.wrong {
+      span {
+        background-color: red;
+      }
+    }
+  }
+}
