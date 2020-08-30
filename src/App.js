@@ -34,29 +34,30 @@ class App extends React.Component {
   }
 
   onItemSelected = (index) => {
-    const { itemArray, rightItem, isStepEnded, stepScore } = this.state;
-    this.setState({
-      selectedItem: itemArray[index]
-    });
+    const { itemArray, rightItem, isStepEnded, stepScore, selectedItem } = this.state;
+
+    if (selectedItem !== itemArray[index]) {
+      this.setState({
+        selectedItem: itemArray[index]
+      });
+    }
+
     if (!isStepEnded && !itemArray[index].checked) {
       let isStepEnded = false;
       let curentStepScore = stepScore;
-      const cloned = JSON.parse(JSON.stringify(itemArray));
-      const modifieditemList = cloned.map((el, i) => {
-        if (i === index && index === rightItem) {
-          el.checked = 'right';
-          new Audio(successAudio).play();
-          isStepEnded = true;
-          this.audioRef.current.audio.current.pause();
-        } else if (i === index && index !== rightItem) {
-          el.checked = 'wrong';
-          new Audio(failAudio).play();
-          curentStepScore--;
-        }
-        return el;
-      });
+      const cloned = [...itemArray];
+      if (index === rightItem) {
+        cloned[index] = { ...cloned[index], checked: 'right' };
+        new Audio(successAudio).play();
+        isStepEnded = true;
+        this.audioRef.current.audio.current.pause();
+      } else if (index !== rightItem) {
+        cloned[index] = { ...cloned[index], checked: 'wrong' };
+        new Audio(failAudio).play();
+        curentStepScore--;
+      }
       this.setState({
-        itemArray: modifieditemList,
+        itemArray: cloned,
         isStepEnded: isStepEnded,
         stepScore: curentStepScore,
       })
